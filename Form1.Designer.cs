@@ -54,6 +54,7 @@
             nudSize.Size = new Size(150, 27);
             nudSize.TabIndex = 0;
             nudSize.Value = new decimal(new int[] { 2, 0, 0, 0 });
+            nudSize.ValueChanged += nudSize_ValueChanged;
             // 
             // dgvInput
             // 
