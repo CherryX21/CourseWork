@@ -37,5 +37,26 @@ namespace CourseWork
             dgvInput.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvOutput.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
+
+        private void buttonGenerate_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+
+            int n = (int)nudSize.Value;
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    int randomNumber = rnd.Next(-10, 11);
+                    dgvInput.Rows[i].Cells[j].Value = randomNumber;
+                }
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        { 
+
+        }
     }
 }

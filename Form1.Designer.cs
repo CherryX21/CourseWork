@@ -31,10 +31,10 @@
             nudSize = new NumericUpDown();
             dgvInput = new DataGridView();
             dgvOutput = new DataGridView();
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
-            button4 = new Button();
+            buttonGenerate = new Button();
+            buttonGauss = new Button();
+            buttonBlock = new Button();
+            buttonSave = new Button();
             richTextBox1 = new RichTextBox();
             label1 = new Label();
             label2 = new Label();
@@ -77,42 +77,44 @@
             dgvOutput.Size = new Size(300, 188);
             dgvOutput.TabIndex = 2;
             // 
-            // button1
+            // buttonGenerate
             // 
-            button1.Location = new Point(110, 272);
-            button1.Name = "button1";
-            button1.Size = new Size(136, 50);
-            button1.TabIndex = 3;
-            button1.Text = "Згенерувати";
-            button1.UseVisualStyleBackColor = true;
+            buttonGenerate.Location = new Point(110, 272);
+            buttonGenerate.Name = "buttonGenerate";
+            buttonGenerate.Size = new Size(136, 50);
+            buttonGenerate.TabIndex = 3;
+            buttonGenerate.Text = "Згенерувати";
+            buttonGenerate.UseVisualStyleBackColor = true;
+            buttonGenerate.Click += buttonGenerate_Click;
             // 
-            // button2
+            // buttonGauss
             // 
-            button2.Location = new Point(252, 272);
-            button2.Name = "button2";
-            button2.Size = new Size(136, 50);
-            button2.TabIndex = 4;
-            button2.Text = "Метод Гауса";
-            button2.UseVisualStyleBackColor = true;
+            buttonGauss.Location = new Point(252, 272);
+            buttonGauss.Name = "buttonGauss";
+            buttonGauss.Size = new Size(136, 50);
+            buttonGauss.TabIndex = 4;
+            buttonGauss.Text = "Метод Гауса";
+            buttonGauss.UseVisualStyleBackColor = true;
+            buttonGauss.Click += button2_Click;
             // 
-            // button3
+            // buttonBlock
             // 
-            button3.Location = new Point(398, 272);
-            button3.Name = "button3";
-            button3.Size = new Size(136, 50);
-            button3.TabIndex = 5;
-            button3.Text = "Метод розбиття на клітки";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            buttonBlock.Location = new Point(398, 272);
+            buttonBlock.Name = "buttonBlock";
+            buttonBlock.Size = new Size(136, 50);
+            buttonBlock.TabIndex = 5;
+            buttonBlock.Text = "Метод розбиття на клітки";
+            buttonBlock.UseVisualStyleBackColor = true;
+            buttonBlock.Click += button3_Click;
             // 
-            // button4
+            // buttonSave
             // 
-            button4.Location = new Point(540, 272);
-            button4.Name = "button4";
-            button4.Size = new Size(136, 50);
-            button4.TabIndex = 6;
-            button4.Text = "Зберегти в файл";
-            button4.UseVisualStyleBackColor = true;
+            buttonSave.Location = new Point(540, 272);
+            buttonSave.Name = "buttonSave";
+            buttonSave.Size = new Size(136, 50);
+            buttonSave.TabIndex = 6;
+            buttonSave.Text = "Зберегти в файл";
+            buttonSave.UseVisualStyleBackColor = true;
             // 
             // richTextBox1
             // 
@@ -168,10 +170,10 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(richTextBox1);
-            Controls.Add(button4);
-            Controls.Add(button3);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(buttonSave);
+            Controls.Add(buttonBlock);
+            Controls.Add(buttonGauss);
+            Controls.Add(buttonGenerate);
             Controls.Add(dgvOutput);
             Controls.Add(dgvInput);
             Controls.Add(nudSize);
@@ -190,10 +192,10 @@
         private NumericUpDown nudSize;
         private DataGridView dgvInput;
         private DataGridView dgvOutput;
-        private Button button1;
-        private Button button2;
-        private Button button3;
-        private Button button4;
+        private Button buttonGenerate;
+        private Button buttonGauss;
+        private Button buttonBlock;
+        private Button buttonSave;
         private RichTextBox richTextBox1;
         private Label label1;
         private Label label2;
