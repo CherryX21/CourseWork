@@ -105,7 +105,7 @@
             buttonBlock.TabIndex = 5;
             buttonBlock.Text = "Метод розбиття на клітки";
             buttonBlock.UseVisualStyleBackColor = true;
-            buttonBlock.Click += button3_Click;
+            buttonBlock.Click += buttonBlock_Click;
             // 
             // buttonSave
             // 
@@ -115,6 +115,7 @@
             buttonSave.TabIndex = 6;
             buttonSave.Text = "Зберегти в файл";
             buttonSave.UseVisualStyleBackColor = true;
+            buttonSave.Click += buttonSave_Click;
             // 
             // rtbLog
             // 

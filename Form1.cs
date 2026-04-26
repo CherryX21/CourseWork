@@ -54,6 +54,11 @@ namespace CourseWork
             }
         }
 
+        private void buttonBlock_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void btnGauss_Click(object sender, EventArgs e)
         {
             try
@@ -102,6 +107,52 @@ namespace CourseWork
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // 1. Проверяем, есть ли вообще что сохранять (чтобы не сохранить пустоту)
+                if (dgvOutput.Rows.Count == 0 || dgvOutput.Rows[0].Cells[0].Value == null)
+                {
+                    MessageBox.Show("Немає даних для збереження! Спочатку обчисліть матрицю.", "Увага", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // 2. Вызываем стандартное виндовое окно сохранения файла
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "Текстовий файл (*.txt)|*.txt"; // Фильтр форматов
+                sfd.FileName = "InverseMatrix.txt"; // Имя по умолчанию
+
+                // 3. Если пользователь нажал "Сохранить", собираем текст
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    string outputText = "Обернена матриця:\n\n";
+                    int n = dgvOutput.ColumnCount;
+
+                    // Пробегаемся по правой таблице и склеиваем числа в строку
+                    for (int i = 0; i < n; i++)
+                    {
+                        for (int j = 0; j < n; j++)
+                        {
+                            // \t - это символ табуляции, чтобы колонки в файле были ровными
+                            outputText += dgvOutput.Rows[i].Cells[j].Value.ToString() + "\t";
+                        }
+                        outputText += "\n"; // Переход на новую строку после каждого ряда
+                    }
+
+                    // 4. Записываем весь собранный текст в выбранный файл
+                    System.IO.File.WriteAllText(sfd.FileName, outputText);
+
+                    // Пишем в нижний лог, что всё прошло успешно
+                    rtbLog.Text = $"Результат успішно збережено у файл:\n{sfd.FileName}\n";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Помилка при збереженні: " + ex.Message, "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
