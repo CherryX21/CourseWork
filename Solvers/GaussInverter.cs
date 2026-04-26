@@ -12,7 +12,7 @@ namespace CourseWork.Solvers
         {
             int n = matrix.GetLength(0);
 
-            // Створюємо розширену матрицю
+            // Створюємо розширену матрицю [A | E]
             double[,] aug = new double[n, 2 * n];
 
             // Заповнюємо матрицю: зліва - початкова (A), справа - одинична (E)
@@ -28,6 +28,33 @@ namespace CourseWork.Solvers
             // Прямий хід: утворення одиниць на діагоналі та нулів під нею
             for (int k = 0; k < n; k++)
             {
+                // Вибір головного елемента (Partial Pivoting) для уникнення ділення на нуль
+                int maxRow = k;
+                for (int i = k + 1; i < n; i++)
+                {
+                    if (Math.Abs(aug[i, k]) > Math.Abs(aug[maxRow, k]))
+                    {
+                        maxRow = i;
+                    }
+                }
+
+                // Перевірка на виродженість матриці (якщо всі елементи нулі)
+                if (Math.Abs(aug[maxRow, k]) < 1e-10)
+                {
+                    throw new Exception("Матриця вироджена (детермінант = 0), оберненої не існує!");
+                }
+
+                // Якщо знайшли рядок з більшим елементом - міняємо їх місцями
+                if (maxRow != k)
+                {
+                    for (int j = 0; j < 2 * n; j++)
+                    {
+                        double temp = aug[k, j];
+                        aug[k, j] = aug[maxRow, j];
+                        aug[maxRow, j] = temp;
+                    }
+                }
+
                 double pivot = aug[k, k];
 
                 // Нормалізація рядка (ділимо на головний елемент)

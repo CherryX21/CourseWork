@@ -35,7 +35,7 @@
             buttonGauss = new Button();
             buttonBlock = new Button();
             buttonSave = new Button();
-            richTextBox1 = new RichTextBox();
+            rtbLog = new RichTextBox();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
@@ -95,7 +95,7 @@
             buttonGauss.TabIndex = 4;
             buttonGauss.Text = "Метод Гауса";
             buttonGauss.UseVisualStyleBackColor = true;
-            buttonGauss.Click += button2_Click;
+            buttonGauss.Click += btnGauss_Click;
             // 
             // buttonBlock
             // 
@@ -116,13 +116,14 @@
             buttonSave.Text = "Зберегти в файл";
             buttonSave.UseVisualStyleBackColor = true;
             // 
-            // richTextBox1
+            // rtbLog
             // 
-            richTextBox1.Location = new Point(12, 373);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(776, 55);
-            richTextBox1.TabIndex = 7;
-            richTextBox1.Text = "";
+            rtbLog.Location = new Point(12, 373);
+            rtbLog.Name = "rtbLog";
+            rtbLog.Size = new Size(776, 55);
+            rtbLog.TabIndex = 7;
+            rtbLog.Text = "";
+            rtbLog.TextChanged += richTextBox1_TextChanged;
             // 
             // label1
             // 
@@ -169,7 +170,7 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(richTextBox1);
+            Controls.Add(rtbLog);
             Controls.Add(buttonSave);
             Controls.Add(buttonBlock);
             Controls.Add(buttonGauss);
@@ -196,7 +197,7 @@
         private Button buttonGauss;
         private Button buttonBlock;
         private Button buttonSave;
-        private RichTextBox richTextBox1;
+        private RichTextBox rtbLog;
         private Label label1;
         private Label label2;
         private Label label3;
