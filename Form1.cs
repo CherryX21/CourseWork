@@ -67,14 +67,24 @@ namespace CourseWork
                 int n = (int)nudSize.Value;
                 double[,] inputMatrix = new double[n, n];
 
-                // 2. Считываем данные из левой таблицы (dgvInput) в массив
+                // 2. Зчитуємо дані з лівої таблиці (dgvInput) у масив
                 for (int i = 0; i < n; i++)
                 {
                     for (int j = 0; j < n; j++)
                     {
-                        // Берем значение из ячейки и конвертируем его в число (double)
                         var cellValue = dgvInput.Rows[i].Cells[j].Value;
-                        inputMatrix[i, j] = Convert.ToDouble(cellValue);
+
+                        // Конвертуємо значення
+                        double val = Convert.ToDouble(cellValue);
+
+                        // ЗАХИСТ ВІД ДУРНЯ: перевіряємо ліміти
+                        if (val > 1000000 || val < -1000000)
+                        {
+                            // Якщо число занадто велике, викидаємо зрозумілу помилку
+                            throw new Exception($"Число {val} у клітинці [{i + 1}, {j + 1}] занадто велике!\nБудь ласка, вводьте числа в діапазоні від -1 000 000 до 1 000 000.");
+                        }
+
+                        inputMatrix[i, j] = val;
                     }
                 }
 

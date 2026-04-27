@@ -138,7 +138,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(569, 22);
+            label2.Location = new Point(555, 22);
             label2.Name = "label2";
             label2.Size = new Size(183, 20);
             label2.TabIndex = 9;
@@ -179,6 +179,7 @@
             Controls.Add(dgvOutput);
             Controls.Add(dgvInput);
             Controls.Add(nudSize);
+            MaximizeBox = false;
             Name = "Form1";
             Text = "Обернення матриць - Мінаєв А.І.";
             Load += Form1_Load;
