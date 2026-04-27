@@ -1,4 +1,7 @@
 #pragma warning disable
+using System;
+using System.Windows.Forms;
+
 namespace CourseWork
 {
     public partial class Form1 : Form
@@ -6,7 +9,8 @@ namespace CourseWork
         public Form1()
         {
             InitializeComponent();
-            nudSize_ValueChanged(null, null); //для коректного відображення матриці при першому запуску
+            // Ініціалізація початкового розміру таблиць при запуску програми
+            nudSize_ValueChanged(null, null);
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -41,9 +45,9 @@ namespace CourseWork
         private void buttonGenerate_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
-
             int n = (int)nudSize.Value;
 
+            // Генерація псевдовипадкових цілих чисел для початкової матриці
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
@@ -56,67 +60,59 @@ namespace CourseWork
 
         private void buttonBlock_Click(object sender, EventArgs e)
         {
-
+            //todo: Реалізувати алгоритм інверсії методом розбиття на клітки
         }
 
         private void btnGauss_Click(object sender, EventArgs e)
         {
             try
             {
-                // 1. Узнаем текущий размер матрицы
                 int n = (int)nudSize.Value;
                 double[,] inputMatrix = new double[n, n];
 
-                // 2. Зчитуємо дані з лівої таблиці (dgvInput) у масив
+                // Зчитування та парсинг даних з графічного інтерфейсу у двовимірний масив
                 for (int i = 0; i < n; i++)
                 {
                     for (int j = 0; j < n; j++)
                     {
                         var cellValue = dgvInput.Rows[i].Cells[j].Value;
-
-                        // Конвертуємо значення
                         double val = Convert.ToDouble(cellValue);
 
-                        // ЗАХИСТ ВІД ДУРНЯ: перевіряємо верхні ліміти (більше мільйона)
+                        //! Валідація: верхня межа (запобігання переповненню)
                         if (Math.Abs(val) > 1000000)
                         {
-                            throw new Exception($"Число {val} у клітинці [{i + 1}, {j + 1}] занадто велике!\nБудь ласка, вводьте числа в діапазоні від -1 000 000 до 1 000 000.");
+                            throw new Exception($"Значення {val} у клітинці [{i + 1}, {j + 1}] перевищує ліміт.\nДіапазон вводу: від -1 000 000 до 1 000 000.");
                         }
 
-                        // ЗАХИСТ ВІД ДУРНЯ: перевіряємо мікро-числа (менше 0.0001, АЛЕ дозволяємо чистий нуль)
+                        //! Валідація: нижня межа / машинний нуль (захист від втрати значущості)
                         if (val != 0 && Math.Abs(val) < 0.0001)
                         {
-                            throw new Exception($"Число {val} у клітинці [{i + 1}, {j + 1}] занадто мале!\nМінімально допустиме значення (окрім нуля) становить 0.0001.");
+                            throw new Exception($"Значення {val} у клітинці [{i + 1}, {j + 1}] занадто мале.\nМінімально допустиме значення (окрім нуля) становить 0.0001.");
                         }
 
-                        inputMatrix[i, j] = val;
-
+                        //x Повторне присвоєння видалено для оптимізації
                         inputMatrix[i, j] = val;
                     }
                 }
 
-                // 3. МАГИЯ: Вызываем твой класс для решения!
-                // (Обязательно добавь using CourseWork.Solvers; в самом верху файла Form1.cs, если студия ругается)
+                // Виклик обчислювального ядра
                 CourseWork.Solvers.GaussInverter solver = new CourseWork.Solvers.GaussInverter();
                 double[,] resultMatrix = solver.Invert(inputMatrix);
 
-                // 4. Выводим результат в правую таблицу (dgvOutput)
+                // Форматування та вивід результатів з точністю до 3 десяткових знаків
                 for (int i = 0; i < n; i++)
                 {
                     for (int j = 0; j < n; j++)
                     {
-                        // Округляем до 3 знаков после запятой для красоты, как в твоем ТЗ
                         dgvOutput.Rows[i].Cells[j].Value = Math.Round(resultMatrix[i, j], 3);
                     }
                 }
 
-                // Пишем об успехе в нижнее текстовое поле (RichTextBox)
-                // Замени rtbLog на имя твоего RichTextBox, если ты назвал его иначе
-                rtbLog.Text = "Метод Гаусса успішно виконано!\n";
+                rtbLog.Text = "Метод Гауса успішно виконано!\n";
             }
             catch (Exception ex)
             {
-                // Если что-то пошло не так (ввели буквы, пустые клетки и т.д.)
+                //! Обробка та виведення помилок валідації або математичних винятків
                 MessageBox.Show("Помилка обчислень: " + ex.Message, "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -130,44 +126,42 @@ namespace CourseWork
         {
             try
             {
-                // 1. Проверяем, есть ли вообще что сохранять (чтобы не сохранить пустоту)
+                //! Блокування експорту порожніх або неініціалізованих DataGridView
                 if (dgvOutput.Rows.Count == 0 || dgvOutput.Rows[0].Cells[0].Value == null)
                 {
                     MessageBox.Show("Немає даних для збереження! Спочатку обчисліть матрицю.", "Увага", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // 2. Вызываем стандартное виндовое окно сохранения файла
+                // Налаштування стандартного діалогового вікна збереження файлу
                 SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "Текстовий файл (*.txt)|*.txt"; // Фильтр форматов
-                sfd.FileName = "InverseMatrix.txt"; // Имя по умолчанию
+                sfd.Filter = "Текстовий файл (*.txt)|*.txt";
+                sfd.FileName = "InverseMatrix.txt";
 
-                // 3. Если пользователь нажал "Сохранить", собираем текст
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
                     string outputText = "Обернена матриця:\n\n";
                     int n = dgvOutput.ColumnCount;
 
-                    // Пробегаемся по правой таблице и склеиваем числа в строку
+                    // Серіалізація масиву в текст із використанням табуляції для вирівнювання колонок
                     for (int i = 0; i < n; i++)
                     {
                         for (int j = 0; j < n; j++)
                         {
-                            // \t - это символ табуляции, чтобы колонки в файле были ровными
                             outputText += dgvOutput.Rows[i].Cells[j].Value.ToString() + "\t";
                         }
-                        outputText += "\n"; // Переход на новую строку после каждого ряда
+                        outputText += "\n";
                     }
 
-                    // 4. Записываем весь собранный текст в выбранный файл
+                    // Експорт сформованої строки на диск
                     System.IO.File.WriteAllText(sfd.FileName, outputText);
 
-                    // Пишем в нижний лог, что всё прошло успешно
                     rtbLog.Text = $"Результат успішно збережено у файл:\n{sfd.FileName}\n";
                 }
             }
             catch (Exception ex)
             {
+                //! Перехоплення помилок доступу до файлової системи (наприклад, файл зайнятий іншим процесом)
                 MessageBox.Show("Помилка при збереженні: " + ex.Message, "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
