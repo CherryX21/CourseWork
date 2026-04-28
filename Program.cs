@@ -2,15 +2,16 @@ namespace CourseWork
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
+        // Точка входу застосунку.
+        // STAThread — обов'язковий атрибут для WinForms,
+        // оскільки UI-компоненти вимагають однопотокової моделі COM (Single-Threaded Apartment).
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
+            // Налаштування DPI та стилю відображення відповідно до конфігурації застосунку
             ApplicationConfiguration.Initialize();
+
+            // Запуск головної форми — програма працює доки Form1 відкрита
             Application.Run(new Form1());
         }
     }

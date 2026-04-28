@@ -6,12 +6,16 @@ using System.Windows.Forms;
 
 namespace CourseWork
 {
+    // Головна форма застосунку.
+    // Відповідає за введення матриці, запуск алгоритмів інверсії,
+    // відображення результату та збереження у файл.
     public partial class Form1 : Form
     {
         public Form1()
         {
             InitializeComponent();
-            // Ініціалізація початкового розміру таблиць при запуску програми
+
+            // Ініціалізація таблиць відповідно до початкового значення nudSize
             nudSize_ValueChanged(null, null);
         }
 
@@ -20,6 +24,8 @@ namespace CourseWork
         private void Form1_Load(object sender, EventArgs e) { }
         private void richTextBox1_TextChanged(object sender, EventArgs e) { }
 
+        // Обробник зміни розміру матриці (NumericUpDown nudSize).
+        // Перебудовує обидві таблиці під новий розмір n×n.
         private void nudSize_ValueChanged(object sender, EventArgs e)
         {
             int n = (int)nudSize.Value;
@@ -29,23 +35,30 @@ namespace CourseWork
             dgvOutput.ColumnCount = n;
             dgvOutput.RowCount = n;
 
+            // Автоматичне вирівнювання ширини стовпців по доступному простору
             dgvInput.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvOutput.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
-
+        // Обробник кнопки "Згенерувати".
+        // Заповнює dgvInput псевдовипадковими цілими числами у діапазоні [-10, 10].
         private void buttonGenerate_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
             int n = (int)nudSize.Value;
 
-            // Генерація псевдовипадкових цілих чисел для початкової матриці
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++)
                     dgvInput.Rows[i].Cells[j].Value = rnd.Next(-10, 11);
         }
 
-        // Зчитує матрицю з dgvInput, повертає масив або кидає Exception з описом проблеми
+        // Зчитує матрицю з dgvInput і повертає її як двовимірний масив.
+        // Виконує валідацію кожної клітинки:
+        //   - перевіряє на порожнє значення
+        //   - перевіряє що значення є числом
+        //   - перевіряє що значення не перевищує ±1 000 000
+        //   - перевіряє що ненульове значення не є меншим за 0.0001 (захист від втрати значущості)
+        // Викидає Exception з описом позиції та причини помилки.
         private double[,] ReadMatrix()
         {
             int n = (int)nudSize.Value;
@@ -76,7 +89,8 @@ namespace CourseWork
             return matrix;
         }
 
-        // Виводить матрицю результату в dgvOutput
+        // Записує матрицю результату в dgvOutput.
+        // Значення округлюються до 3 десяткових знаків для зручності відображення.
         private void WriteResult(double[,] result)
         {
             int n = result.GetLength(0);
@@ -86,7 +100,9 @@ namespace CourseWork
                     dgvOutput.Rows[i].Cells[j].Value = Math.Round(result[i, j], 3);
         }
 
-        // Обчислює норму відхилення A·A⁻¹ від одиничної матриці (перевірка точності)
+        // Обчислює максимальну абсолютну похибку добутку A·A⁻¹ відносно одиничної матриці E.
+        // Використовується для верифікації коректності результату.
+        // Ідеальний результат: похибка = 0. На практиці допустима похибка < 1e-9.
         private double ComputeError(double[,] A, double[,] Ainv)
         {
             int n = A.GetLength(0);
@@ -101,6 +117,7 @@ namespace CourseWork
                     for (int k = 0; k < n; k++)
                         sum += A[i, k] * Ainv[k, j];
 
+                    // На діагоналі очікується 1, поза діагоналлю — 0
                     double expected = (i == j) ? 1.0 : 0.0;
                     maxError = Math.Max(maxError, Math.Abs(sum - expected));
                 }
@@ -109,6 +126,8 @@ namespace CourseWork
             return maxError;
         }
 
+        // Обробник кнопки "Метод Гауса".
+        // Зчитує матрицю, запускає GaussInverter, виводить результат і лог.
         private void btnGauss_Click(object sender, EventArgs e)
         {
             try
@@ -116,6 +135,7 @@ namespace CourseWork
                 double[,] inputMatrix = ReadMatrix();
                 int n = inputMatrix.GetLength(0);
 
+                // Вимірювання часу виконання алгоритму
                 Stopwatch sw = Stopwatch.StartNew();
                 CourseWork.Solvers.GaussInverter solver = new CourseWork.Solvers.GaussInverter();
                 double[,] result = solver.Invert(inputMatrix);
@@ -123,6 +143,7 @@ namespace CourseWork
 
                 WriteResult(result);
 
+                // Верифікація: перевірка що A·A⁻¹ близька до одиничної матриці
                 double error = ComputeError(inputMatrix, result);
 
                 StringBuilder log = new StringBuilder();
@@ -139,13 +160,16 @@ namespace CourseWork
             }
         }
 
+        // Обробник кнопки "Метод розбиття на клітки".
+        // Перед запуском перевіряє що розмір матриці парний — це обов'язкова умова методу.
+        // Метод Гауса при цьому не обмежується і працює для будь-якого n.
         private void buttonBlock_Click(object sender, EventArgs e)
         {
             try
             {
                 int n = (int)nudSize.Value;
 
-                // Метод розбиття на клітки вимагає парного розміру
+                // Перевірка парності розміру — специфічна вимога блочного методу
                 if (n % 2 != 0)
                 {
                     MessageBox.Show(
@@ -158,6 +182,7 @@ namespace CourseWork
 
                 double[,] inputMatrix = ReadMatrix();
 
+                // Вимірювання часу виконання алгоритму
                 Stopwatch sw = Stopwatch.StartNew();
                 CourseWork.Solvers.BlockInverter solver = new CourseWork.Solvers.BlockInverter();
                 double[,] result = solver.Invert(inputMatrix);
@@ -165,6 +190,7 @@ namespace CourseWork
 
                 WriteResult(result);
 
+                // Верифікація: перевірка що A·A⁻¹ близька до одиничної матриці
                 double error = ComputeError(inputMatrix, result);
 
                 StringBuilder log = new StringBuilder();
@@ -181,10 +207,14 @@ namespace CourseWork
             }
         }
 
+        // Обробник кнопки "Зберегти в файл".
+        // Зберігає вміст dgvOutput та журнал rtbLog у текстовий файл .txt.
+        // Стовпці вирівнюються за допомогою PadLeft для читабельності.
         private void buttonSave_Click(object sender, EventArgs e)
         {
             try
             {
+                // Перевірка що результат вже обчислений перед збереженням
                 if (dgvOutput.Rows.Count == 0 || dgvOutput.Rows[0].Cells[0].Value == null)
                 {
                     MessageBox.Show("Немає даних для збереження! Спочатку обчисліть матрицю.", "Увага", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -203,6 +233,7 @@ namespace CourseWork
                     sb.AppendLine("Обернена матриця:");
                     sb.AppendLine();
 
+                    // Серіалізація матриці у текст з вирівнюванням стовпців
                     for (int i = 0; i < n; i++)
                     {
                         for (int j = 0; j < n; j++)
@@ -212,6 +243,8 @@ namespace CourseWork
                     }
 
                     sb.AppendLine();
+
+                    // Додавання журналу результатів до файлу
                     sb.AppendLine(rtbLog.Text);
 
                     System.IO.File.WriteAllText(sfd.FileName, sb.ToString());
