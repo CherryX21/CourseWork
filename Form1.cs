@@ -53,12 +53,6 @@ namespace CourseWork
         }
 
         // Зчитує матрицю з dgvInput і повертає її як двовимірний масив.
-        // Виконує валідацію кожної клітинки:
-        //   - перевіряє на порожнє значення
-        //   - перевіряє що значення є числом
-        //   - перевіряє що значення не перевищує ±1 000 000
-        //   - перевіряє що ненульове значення не є меншим за 0.0001 (захист від втрати значущості)
-        // Викидає Exception з описом позиції та причини помилки.
         private double[,] ReadMatrix()
         {
             int n = (int)nudSize.Value;
@@ -70,19 +64,8 @@ namespace CourseWork
                 {
                     var cellValue = dgvInput.Rows[i].Cells[j].Value;
 
-                    if (cellValue == null || cellValue.ToString().Trim() == "")
-                        throw new Exception($"Клітинка [{i + 1}, {j + 1}] порожня. Заповніть усі клітинки або використайте генерацію.");
-
-                    if (!double.TryParse(cellValue.ToString(), out double val))
-                        throw new Exception($"Клітинка [{i + 1}, {j + 1}] містить некоректне значення \"{cellValue}\". Допустимі лише числа.");
-
-                    if (Math.Abs(val) > 1_000_000)
-                        throw new Exception($"Значення {val} у клітинці [{i + 1}, {j + 1}] перевищує ліміт ±1 000 000.");
-
-                    if (val != 0 && Math.Abs(val) < 0.0001)
-                        throw new Exception($"Значення {val} у клітинці [{i + 1}, {j + 1}] занадто мале.\nМінімально допустиме ненульове значення: 0.0001.");
-
-                    matrix[i, j] = val;
+                    //! Вся перевірка (букви, ліміти, порожнеча) делегована окремому класу-валідатору
+                    matrix[i, j] = CourseWork.InputValidator.ValidateCell(cellValue, i, j);
                 }
             }
 

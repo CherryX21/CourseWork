@@ -79,7 +79,7 @@
             // 
             // buttonGenerate
             // 
-            buttonGenerate.Location = new Point(110, 272);
+            buttonGenerate.Location = new Point(110, 240);
             buttonGenerate.Name = "buttonGenerate";
             buttonGenerate.Size = new Size(136, 50);
             buttonGenerate.TabIndex = 3;
@@ -89,7 +89,7 @@
             // 
             // buttonGauss
             // 
-            buttonGauss.Location = new Point(252, 272);
+            buttonGauss.Location = new Point(252, 240);
             buttonGauss.Name = "buttonGauss";
             buttonGauss.Size = new Size(136, 50);
             buttonGauss.TabIndex = 4;
@@ -99,7 +99,7 @@
             // 
             // buttonBlock
             // 
-            buttonBlock.Location = new Point(398, 272);
+            buttonBlock.Location = new Point(398, 240);
             buttonBlock.Name = "buttonBlock";
             buttonBlock.Size = new Size(136, 50);
             buttonBlock.TabIndex = 5;
@@ -109,7 +109,7 @@
             // 
             // buttonSave
             // 
-            buttonSave.Location = new Point(540, 272);
+            buttonSave.Location = new Point(540, 240);
             buttonSave.Name = "buttonSave";
             buttonSave.Size = new Size(136, 50);
             buttonSave.TabIndex = 6;
@@ -119,9 +119,9 @@
             // 
             // rtbLog
             // 
-            rtbLog.Location = new Point(12, 373);
+            rtbLog.Location = new Point(12, 332);
             rtbLog.Name = "rtbLog";
-            rtbLog.Size = new Size(776, 55);
+            rtbLog.Size = new Size(776, 96);
             rtbLog.TabIndex = 7;
             rtbLog.Text = "";
             rtbLog.TextChanged += richTextBox1_TextChanged;
@@ -156,7 +156,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(340, 350);
+            label4.Location = new Point(340, 309);
             label4.Name = "label4";
             label4.Size = new Size(146, 20);
             label4.TabIndex = 11;
