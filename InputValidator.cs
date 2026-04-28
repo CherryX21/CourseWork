@@ -2,7 +2,7 @@
 using System;
 using System.Globalization;
 
-namespace CourseWork.Solvers
+namespace CourseWork
 {
     public static class InputValidator
     {
