@@ -48,7 +48,7 @@
             // nudSize
             // 
             nudSize.Location = new Point(324, 97);
-            nudSize.Maximum = new decimal(new int[] { 8, 0, 0, 0 });
+            nudSize.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
             nudSize.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
             nudSize.Name = "nudSize";
             nudSize.Size = new Size(150, 27);
