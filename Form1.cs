@@ -15,6 +15,10 @@ namespace CourseWork
         {
             InitializeComponent();
 
+            // Забороняємо ручне введення в таблицю результатів
+            dgvOutput.ReadOnly = true;
+            dgvOutput.AllowUserToAddRows = false;
+
             // Ініціалізація таблиць відповідно до початкового значення nudSize
             nudSize_ValueChanged(null, null);
         }
