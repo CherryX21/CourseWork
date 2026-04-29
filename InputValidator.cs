@@ -22,6 +22,9 @@ namespace CourseWork
             if (!double.TryParse(normalizedInput, NumberStyles.Any, CultureInfo.InvariantCulture, out double parsedValue))
                 throw new Exception($"Некоректний формат числа у клітинці [{row + 1}, {col + 1}].");
 
+            if (double.IsNaN(parsedValue) || double.IsInfinity(parsedValue))
+                throw new Exception($"Клітинка [{row + 1}, {col + 1}] містить нескінченність або NaN.");
+
             // Валідація математичних обмежень через switch expression (C# 8.0+)
             return parsedValue switch
             {
