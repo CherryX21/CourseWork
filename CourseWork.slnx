@@ -1,4 +1,4 @@
 <Solution>
-  <Project Path="../CourseWork.Tests/CourseWork.Tests.csproj" Id="7730b635-7360-4dc0-9aca-0963dd8b35fa" />
   <Project Path="CourseWork.csproj" />
+  <Project Path="CourseWork.Tests/CourseWork.Tests.csproj" />
 </Solution>
