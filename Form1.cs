@@ -1,4 +1,5 @@
 #pragma warning disable
+using CourseWork.Solvers;
 using System;
 using System.Diagnostics;
 using System.Text;
@@ -85,8 +86,19 @@ namespace CourseWork
             int n = result.GetLength(0);
 
             for (int i = 0; i < n; i++)
+            {
                 for (int j = 0; j < n; j++)
-                    dgvOutput.Rows[i].Cells[j].Value = Math.Round(result[i, j], 3);
+                {
+                    double roundedValue = Math.Round(result[i, j], 3);
+
+                    if (roundedValue == 0.0 || roundedValue == -0.0)
+                    {
+                        roundedValue = 0.0;
+                    }
+
+                    dgvOutput.Rows[i].Cells[j].Value = roundedValue;
+                }
+            }
         }
 
         // Обчислює максимальну абсолютну похибку добутку A·A⁻¹ відносно одиничної матриці E.
@@ -125,6 +137,7 @@ namespace CourseWork
                 int n = inputMatrix.GetLength(0);
 
                 // Вимірювання часу виконання алгоритму
+                Profiler.OperationsCount = 0;
                 Stopwatch sw = Stopwatch.StartNew();
                 CourseWork.Solvers.GaussInverter solver = new CourseWork.Solvers.GaussInverter();
                 double[,] result = solver.Invert(inputMatrix);
@@ -138,6 +151,7 @@ namespace CourseWork
                 StringBuilder log = new StringBuilder();
                 log.AppendLine("Метод Гауса — виконано успішно");
                 log.AppendLine($"Розмір матриці: {n}×{n}");
+                log.AppendLine($"Кількість обчислених операцій: {Profiler.OperationsCount}");
                 log.AppendLine($"Час виконання: {sw.Elapsed.TotalMilliseconds:F3} мс");
                 log.AppendLine($"Похибка верифікації ||A·A⁻¹ - E||: {error:E3}");
 
@@ -172,6 +186,7 @@ namespace CourseWork
                 double[,] inputMatrix = ReadMatrix();
 
                 // Вимірювання часу виконання алгоритму
+                Profiler.OperationsCount = 0;
                 Stopwatch sw = Stopwatch.StartNew();
                 CourseWork.Solvers.BlockInverter solver = new CourseWork.Solvers.BlockInverter();
                 double[,] result = solver.Invert(inputMatrix);
@@ -185,6 +200,7 @@ namespace CourseWork
                 StringBuilder log = new StringBuilder();
                 log.AppendLine("Метод розбиття на клітки — виконано успішно");
                 log.AppendLine($"Розмір матриці: {n}×{n}  |  Розмір блоку: {n / 2}×{n / 2}");
+                log.AppendLine($"Кількість обчислених операцій: {Profiler.OperationsCount}");
                 log.AppendLine($"Час виконання: {sw.Elapsed.TotalMilliseconds:F3} мс");
                 log.AppendLine($"Похибка верифікації ||A·A⁻¹ - E||: {error:E3}");
 
