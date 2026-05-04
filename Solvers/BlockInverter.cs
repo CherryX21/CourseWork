@@ -51,7 +51,15 @@ namespace CourseWork.Solvers
             GaussInverter gauss = new GaussInverter();
 
             // Крок 1: обернення верхнього лівого блоку P
-            double[,] Pinv = gauss.Invert(P);
+            double[,] Pinv;
+            try
+            {
+                Pinv = gauss.Invert(P);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Метод розбиття на клітки неможливо застосувати: верхній лівий блок матриці (головний мінор) є виродженим.");
+            }
 
             // Крок 2: обчислення доповнення Шура T = S - R·P⁻¹·Q.
             // Доповнення Шура виражає "вплив блоку P на решту матриці".
@@ -61,7 +69,15 @@ namespace CourseWork.Solvers
             double[,] T = Subtract(S, RPinvQ);
 
             // Крок 3: обернення доповнення Шура
-            double[,] Tinv = gauss.Invert(T);
+            double[,] Tinv;
+            try
+            {
+                Tinv = gauss.Invert(T);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Метод розбиття на клітки неможливо застосувати: доповнення Шура (блок T) є виродженим.");
+            }
 
             // Крок 4: обчислення чотирьох блоків оберненої матриці.
             // PinvQTinv використовується і в C11, і в C12 — рахується один раз.
