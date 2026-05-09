@@ -126,7 +126,10 @@ namespace CourseWork.Solvers
             for (int i = 0; i < rows; i++)
                 for (int j = 0; j < cols; j++)
                     for (int k = 0; k < inner; k++)
+                    {
                         result[i, j] += A[i, k] * B[k, j];
+                        Profiler.OperationsCount += 2; //+2 операції (множення і додавання)
+                    }
 
             return result;
         }
@@ -140,7 +143,10 @@ namespace CourseWork.Solvers
 
             for (int i = 0; i < rows; i++)
                 for (int j = 0; j < cols; j++)
+                {
                     result[i, j] = A[i, j] + B[i, j];
+                    Profiler.OperationsCount++; //+1 операція (додавання)
+                }
 
             return result;
         }
@@ -154,7 +160,10 @@ namespace CourseWork.Solvers
 
             for (int i = 0; i < rows; i++)
                 for (int j = 0; j < cols; j++)
+                {
                     result[i, j] = A[i, j] - B[i, j];
+                    Profiler.OperationsCount++; //+1 операція (віднімання)
+                }
 
             return result;
         }
@@ -168,7 +177,10 @@ namespace CourseWork.Solvers
 
             for (int i = 0; i < rows; i++)
                 for (int j = 0; j < cols; j++)
+                {
                     result[i, j] = -A[i, j];
+                    Profiler.OperationsCount++; //+1 операція (зміна знаку)
+                }
 
             return result;
         }

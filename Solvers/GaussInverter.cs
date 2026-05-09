@@ -69,7 +69,10 @@ namespace CourseWork.Solvers
                 // Нормалізація рядка k: ділимо всі елементи на головний елемент,
                 // щоб на діагоналі стояла одиниця
                 for (int j = 0; j < 2 * n; j++)
+                {
                     aug[k, j] /= pivot;
+                    Profiler.OperationsCount++; //+1 операція (ділення)
+                }
 
                 // Обнулення всіх елементів нижче діагоналі у стовпці k
                 for (int i = k + 1; i < n; i++)
@@ -77,7 +80,10 @@ namespace CourseWork.Solvers
                     double factor = aug[i, k];
 
                     for (int j = 0; j < 2 * n; j++)
+                    {
                         aug[i, j] -= factor * aug[k, j];
+                        Profiler.OperationsCount += 2; //+2 операції (множення та віднімання)
+                    }
                 }
             }
 
@@ -90,7 +96,10 @@ namespace CourseWork.Solvers
                     double factor = aug[i, k];
 
                     for (int j = 0; j < 2 * n; j++)
+                    {
                         aug[i, j] -= factor * aug[k, j];
+                        Profiler.OperationsCount += 2; //+2 операції (множення та віднімання)
+                    }
                 }
             }
 
