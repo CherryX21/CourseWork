@@ -1,4 +1,9 @@
-﻿#pragma warning disable
+﻿// Файл: IMatrixInverter.cs
+// Призначення: Оголошення загального інтерфейсу для алгоритмів обернення матриці.
+// Задає єдиний контракт (шаблон) методів, які обов'язково повинні реалізувати 
+// всі класи-обчислювачі (наприклад, GaussInverter та BlockInverter), 
+// що забезпечує гнучкість та поліморфізм архітектури.
+#pragma warning disable
 using System;
 using System.Collections.Generic;
 using System.Text;
