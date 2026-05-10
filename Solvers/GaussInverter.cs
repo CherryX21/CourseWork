@@ -1,4 +1,8 @@
-﻿#pragma warning disable
+﻿// Файл: GaussInverter.cs
+// Призначення: Логіка обчислення оберненої матриці методом Гаусса-Жордана.
+// Містить алгоритм зведення матриці до одиничного вигляду з використанням 
+// пошуку головного елемента для забезпечення максимальної точності розрахунків.
+#pragma warning disable
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
