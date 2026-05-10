@@ -89,7 +89,7 @@ namespace CourseWork
             {
                 for (int j = 0; j < n; j++)
                 {
-                    double roundedValue = Math.Round(result[i, j], 3);
+                    double roundedValue = Math.Round(result[i, j], 6);
 
                     if (roundedValue == 0.0 || roundedValue == -0.0)
                     {
