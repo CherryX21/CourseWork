@@ -247,7 +247,6 @@ namespace CourseWork
                     {
                         for (int j = 0; j < n; j++)
                         {
-                            // sb.Append(dgvOutput.Rows[i].Cells[j].Value.ToString().PadLeft(12));
                             string cellText = dgvOutput.Rows[i].Cells[j].Value?.ToString() ?? "";
                             sb.Append(cellText.PadLeft(12));
                         }
